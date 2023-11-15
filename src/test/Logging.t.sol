@@ -5,8 +5,6 @@ import "forge-std/Test.sol";
 
 import {FeConfig} from "../FeConfig.sol";
 import {FeDeployer} from "../FeDeployer.sol";
-import {INumber} from "./interfaces/INumber.sol";
-import {IConstructor} from "./interfaces/IConstructor.sol";
 
 contract LoggingTest is Test {
     event LogOne();

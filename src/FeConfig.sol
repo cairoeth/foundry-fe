@@ -187,23 +187,22 @@ contract FeConfig {
         vm.ffi(append_cmds);
 
         /// Create a list of strings with the commands necessary to compile Fe contracts
-        string[] memory cmds = new string[](5);
-        if (const_overrides.length > 0) {
-            cmds = new string[](6 + const_overrides.length);
-            cmds[5] = "-c";
+        string[] memory cmds = new string[](3);
+        // TODO: Update below.
+        // if (const_overrides.length > 0) {
+        //     cmds = new string[](6 + const_overrides.length);
+        //     cmds[5] = "-c";
 
-            Constant memory cur_const;
-            for (uint256 i; i < const_overrides.length; i++) {
-                cur_const = const_overrides[i];
-                cmds[6 + i] = string.concat(cur_const.key, "=", cur_const.value);
-            }
-        }
+        //     Constant memory cur_const;
+        //     for (uint256 i; i < const_overrides.length; i++) {
+        //         cur_const = const_overrides[i];
+        //         cmds[6 + i] = string.concat(cur_const.key, "=", cur_const.value);
+        //     }
+        // }
 
         cmds[0] = "fe";
-        cmds[1] = string(string.concat("src/", tempFile, ".fe"));
-        cmds[2] = "-b";
-        cmds[3] = "-e";
-        cmds[4] = get_evm_version();
+        cmds[1] = "build";
+        cmds[2] = string(string.concat("src/", tempFile, ".fe"));
 
         /// @notice compile the Fe contract and return the bytecode
         bytecode = vm.ffi(cmds);
@@ -215,7 +214,6 @@ contract FeConfig {
 
         // set `msg.sender` for upcoming create context
         vm.prank(deployer);
-
 
         vm.ffi(cleanup);
     }

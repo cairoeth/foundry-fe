@@ -3,13 +3,10 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "forge-std/Test.sol";
 
-import {INumber} from "./interfaces/INumber.sol";
-import {IConstructor} from "./interfaces/IConstructor.sol";
 import {FeConfig} from "../FeConfig.sol";
 
 contract FeConfigTest is Test {
     FeConfig public config;
-    INumber public number;
 
     function setUp() public {
         config = new FeConfig();
