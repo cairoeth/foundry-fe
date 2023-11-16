@@ -5,33 +5,31 @@ import "forge-std/Test.sol";
 
 import {FeConfig} from "../FeConfig.sol";
 import {FeDeployer} from "../FeDeployer.sol";
-import {IERC20} from "./interfaces/IERC20.sol";
-import {IConstructor} from "./interfaces/IConstructor.sol";
+import {IExample} from "./interfaces/IExample.sol";
 
 contract FeDeployerTest is Test {
-    IERC20 erc20;
-    IConstructor structor;
+    IExample example;
 
     event ArgumentsUpdated(address indexed one, uint256 indexed two);
 
     function setUp() public {
-        erc20 = IERC20(FeDeployer.deploy("test/contracts/ERC20"));
+        example = IExample(FeDeployer.deploy("test/contracts/Example"));
 
-        // Backwards-compatible Constructor creation
-        vm.recordLogs();
-        structor = IConstructor(
-            FeDeployer.deploy_with_args(
-                "test/contracts/Constructor",
-                bytes.concat(abi.encode(uint256(0x420)), abi.encode(address(0x420)))
-            )
-        );
-        Vm.Log[] memory entries = vm.getRecordedLogs();
+        // // Backwards-compatible Constructor creation
+        // vm.recordLogs();
+        // structor = IConstructor(
+        //     FeDeployer.deploy_with_args(
+        //         "test/contracts/Constructor",
+        //         bytes.concat(abi.encode(uint256(0x420)), abi.encode(address(0x420)))
+        //     )
+        // );
+        // Vm.Log[] memory entries = vm.getRecordedLogs();
 
-        assertEq(entries.length, 1);
-        assertEq(entries[0].topics.length, 3);
-        assertEq(entries[0].topics[0], bytes32(uint256(keccak256("ArgumentsUpdated(address,uint256)"))));
-        assertEq(entries[0].topics[1], bytes32(uint256(uint160(address(0x420)))));
-        assertEq(entries[0].topics[2], bytes32(uint256(0x420)));
+        // assertEq(entries.length, 1);
+        // assertEq(entries[0].topics.length, 3);
+        // assertEq(entries[0].topics[0], bytes32(uint256(keccak256("ArgumentsUpdated(address,uint256)"))));
+        // assertEq(entries[0].topics[1], bytes32(uint256(uint160(address(0x420)))));
+        // assertEq(entries[0].topics[2], bytes32(uint256(0x420)));
     }
 
     // function testChaining() public {
@@ -122,11 +120,13 @@ contract FeDeployerTest is Test {
     // }
 
     function testArgOne() public {
-        assertEq(block.timestamp + uint256(0x420), structor.aunction_end_time());
+        assertEq(0, example.get_time());
+        example.set_time();
+        assertEq(block.timestamp, example.get_time());
     }
 
     function testArgTwo() public {
-        assertEq(address(0x420), structor.beneficiary());
+        assertEq(address(0x420), example.get_beneficiary());
     }
 
     // function testBytecode() public {

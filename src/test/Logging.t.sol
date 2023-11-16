@@ -16,7 +16,7 @@ contract LoggingTest is Test {
     );
 
     function testLoggingWithArgs() public {
-       vm.recordLogs();
+        vm.recordLogs();
         FeDeployer.deploy_with_args(
             "test/contracts/LotsOfLogging",
             bytes.concat(abi.encode(address(0x420)), abi.encode(uint256(0x420)))
@@ -34,12 +34,17 @@ contract LoggingTest is Test {
         // assertEq(entries[2].topics[1], ?); should be address from deployed config
         assertEq(entries[2].topics[2], bytes32(uint256(0x0)));
         assertEq(entries[3].topics.length, 4);
-        assertEq(entries[3].topics[0], bytes32(uint256(keccak256("LogFour(address,uint256,bytes32)"))));
+        assertEq(
+            entries[3].topics[0], bytes32(uint256(keccak256("LogFour(address,uint256,bytes32)")))
+        );
         // assertEq(entries[3].topics[1], ?); should be address from deployed config
         assertEq(entries[3].topics[2], bytes32(uint256(0x0)));
         assertEq(entries[3].topics[3], bytes32(uint256(keccak256(abi.encode(1)))));
         assertEq(entries[4].topics.length, 4);
-        assertEq(entries[4].topics[0], bytes32(uint256(keccak256("Extended(address,uint256,bytes32,bytes32,bytes32)"))));
+        assertEq(
+            entries[4].topics[0],
+            bytes32(uint256(keccak256("Extended(address,uint256,bytes32,bytes32,bytes32)")))
+        );
         // assertEq(entries[4].topics[1], ?); should be address from deployed config
         assertEq(entries[4].topics[2], bytes32(uint256(0x0)));
         assertEq(entries[4].topics[3], bytes32(uint256(keccak256(abi.encode(1)))));
@@ -58,7 +63,7 @@ contract LoggingTest is Test {
             keccak256(abi.encode(1)),
             keccak256(abi.encode(2)),
             keccak256(abi.encode(3))
-            );
+        );
         FeDeployer.deploy("test/contracts/LotsOfLogging");
     }
 
@@ -75,7 +80,7 @@ contract LoggingTest is Test {
             keccak256(abi.encode(1)),
             keccak256(abi.encode(2)),
             keccak256(abi.encode(3))
-            );
+        );
         config.deploy("test/contracts/LotsOfLogging");
     }
 }

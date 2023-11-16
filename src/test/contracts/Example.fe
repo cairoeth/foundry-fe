@@ -1,0 +1,20 @@
+contract Example {
+  time: u256
+  beneficiary: address 
+
+  pub fn set_beneficiary(mut self, addr: address) {
+      self.beneficiary = addr
+  }
+
+  pub fn set_time(mut self, ctx: Context) {
+      self.time = ctx.block_timestamp()
+  }
+
+  pub fn get_time(self) -> u256 {
+    return self.time
+  }
+
+    pub fn get_beneficiary(self) -> address {
+       return self.beneficiary
+    }
+}

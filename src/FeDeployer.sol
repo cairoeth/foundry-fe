@@ -17,18 +17,20 @@ library FeDeployer {
 
     // @notice Get the address of a FeConfig deployed with config_with_create_2
     function get_config_with_create_2(uint256 salt) public view returns (address) {
-        return 
-            address(
-                uint160(
-                    uint256(
-                        keccak256(
-                            abi.encodePacked(
-                                bytes1(0xff), address(this), bytes32(salt), keccak256(type(FeConfig).creationCode)
-                            )
+        return address(
+            uint160(
+                uint256(
+                    keccak256(
+                        abi.encodePacked(
+                            bytes1(0xff),
+                            address(this),
+                            bytes32(salt),
+                            keccak256(type(FeConfig).creationCode)
                         )
                     )
                 )
-            );
+            )
+        );
     }
 
     /// @notice Compiles a Fe contract and returns the address that the contract was deployeod to

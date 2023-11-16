@@ -108,7 +108,8 @@ contract FeConfig {
         bytes8 first_bytes = retData[0];
         bool decoded = first_bytes == bytes8(hex"01");
         require(
-            decoded, "Invalid fe binary. Run `brew install fe-lang/tap/fe` and compile again to fix."
+            decoded,
+            "Invalid fe binary. Run `brew install fe-lang/tap/fe` and compile again to fix."
         );
     }
 
@@ -204,11 +205,26 @@ contract FeConfig {
         cmds[1] = "build";
         cmds[2] = string(string.concat("src/", tempFile, ".fe"));
 
-        /// @notice compile the Fe contract and return the bytecode
-        bytecode = vm.ffi(cmds);
+        /// @notice compile the Fe contract and then fetch the bytecode
+        vm.ffi(cmds);
+
+        string[] memory readCmds = new string[](3);
+        readCmds[0] = "cat";
+        readCmds[1] =
+            string.concat("output/", parts[parts.length - 1], "/", parts[parts.length - 1], ".bin");
+
+        bytecode = vm.ffi(readCmds);
+
+        // Clean up output directory
+        string[] memory cleanupOutput = new string[](3);
+        cleanupOutput[0] = "rm";
+        cleanupOutput[1] = "-r";
+        cleanupOutput[2] = "output";
+
+        vm.ffi(cleanupOutput);
 
         // Clean up temp files
-        string[] memory cleanup = new string[](2);
+        string[] memory cleanup = new string[](3);
         cleanup[0] = "rm";
         cleanup[1] = string.concat("src/", tempFile, ".fe");
 
@@ -219,7 +235,11 @@ contract FeConfig {
     }
 
     /// @notice get creation code of a contract plus encoded arguments
-    function creation_code_with_args(string memory file) public payable returns (bytes memory bytecode) {
+    function creation_code_with_args(string memory file)
+        public
+        payable
+        returns (bytes memory bytecode)
+    {
         bytecode = creation_code(file);
         return bytes.concat(bytecode, args);
     }
