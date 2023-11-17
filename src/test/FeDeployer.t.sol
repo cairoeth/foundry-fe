@@ -13,7 +13,9 @@ contract FeDeployerTest is Test {
     event ArgumentsUpdated(address indexed one, uint256 indexed two);
 
     function setUp() public {
-        example = IExample(FeDeployer.deploy("test/contracts/Example"));
+        example = IExample(
+            FeDeployer.deploy("src/test/contracts/Example.fe", "Example")
+        );
 
         // // Backwards-compatible Constructor creation
         // vm.recordLogs();
