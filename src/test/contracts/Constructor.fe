@@ -43,6 +43,10 @@ contract Auction {
     }
 
     //method
+    pub fn get_beneficiary(self) -> address {
+       return self.beneficiary
+    }
+    
     pub fn bid(mut self, mut ctx: Context) {
         if ctx.block_timestamp() > self.auction_end_time {
             revert AuctionAlreadyEnded()

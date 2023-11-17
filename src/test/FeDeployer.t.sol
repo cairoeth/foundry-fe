@@ -1,14 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.7.0 <0.9.0;
 
-import "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 
 import {FeConfig} from "../FeConfig.sol";
 import {FeDeployer} from "../FeDeployer.sol";
 import {IExample} from "./interfaces/IExample.sol";
+import {IAuction} from "./interfaces/IAuction.sol";
 
 contract FeDeployerTest is Test {
     IExample example;
+    IAuction auction;
 
     event ArgumentsUpdated(address indexed one, uint256 indexed two);
 
@@ -17,21 +19,13 @@ contract FeDeployerTest is Test {
             FeDeployer.deploy("src/test/contracts/Example.fe", "Example")
         );
 
-        // // Backwards-compatible Constructor creation
-        // vm.recordLogs();
-        // structor = IConstructor(
-        //     FeDeployer.deploy_with_args(
-        //         "test/contracts/Constructor",
-        //         bytes.concat(abi.encode(uint256(0x420)), abi.encode(address(0x420)))
-        //     )
-        // );
-        // Vm.Log[] memory entries = vm.getRecordedLogs();
-
-        // assertEq(entries.length, 1);
-        // assertEq(entries[0].topics.length, 3);
-        // assertEq(entries[0].topics[0], bytes32(uint256(keccak256("ArgumentsUpdated(address,uint256)"))));
-        // assertEq(entries[0].topics[1], bytes32(uint256(uint160(address(0x420)))));
-        // assertEq(entries[0].topics[2], bytes32(uint256(0x420)));
+        auction = IAuction(
+            FeDeployer.deploy_with_args(
+                "src/test/contracts/Constructor.fe",
+                "Auction",
+                abi.encode(uint256(0x420), address(0x420))
+            )
+        );
     }
 
     // function testChaining() public {
@@ -130,6 +124,10 @@ contract FeDeployerTest is Test {
     function testArgTwo() public {
         example.set_beneficiary(address(0x420));
         assertEq(address(0x420), example.get_beneficiary());
+    }
+
+    function testConstructorArg() public {
+        assertEq(address(0x420), auction.get_beneficiary());
     }
 
     // function testWithValueDeployment() public {
