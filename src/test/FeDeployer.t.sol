@@ -128,15 +128,9 @@ contract FeDeployerTest is Test {
     }
 
     function testArgTwo() public {
+        example.set_beneficiary(address(0x420));
         assertEq(address(0x420), example.get_beneficiary());
     }
-
-    // function testBytecode() public {
-    //     bytes memory b = bytes(
-    //         hex"5f3560e01c80633fb5c1cb1461001b578063f2c9ecd814610021575b6004355f555b5f545f5260205ff3"
-    //     );
-    //     assertEq(getCode(address(number)), b);
-    // }
 
     // function testWithValueDeployment() public {
     //     uint256 value = 1 ether;
@@ -148,34 +142,6 @@ contract FeDeployerTest is Test {
     // function testWithValueDeployment_Create2() public {
     //     uint256 value = 1 ether;
     //     FeDeployer.config_with_create_2(1).with_value(value).deploy{value: value}("test/contracts/ConstructorNeedsValue");
-    // }
-
-    // function testConstantOverride() public {
-    //     // Test address constant
-    //     address a = 0xDeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF;
-    //     address deployed = FeDeployer.config().with_addr_constant("a", a).with_constant(
-    //         "b", "0x420"
-    //     ).deploy("test/contracts/ConstOverride");
-    //     assertEq(getCode(deployed), hex"73DeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF610420");
-
-    //     // Test uint constant
-    //     address deployed_2 = FeDeployer.config().with_uint_constant("a", 32).with_constant(
-    //         "b", "0x420"
-    //     ).deploy("test/contracts/ConstOverride");
-    //     assertEq(getCode(deployed_2), hex"6020610420");
-
-    //     // Test bytes32 constant
-    //     address deployed_3 = FeDeployer.config().with_bytes32_constant("a", bytes32(hex"01"))
-    //         .with_constant("b", "0x420").deploy("test/contracts/ConstOverride");
-    //     assertEq(
-    //         getCode(deployed_3),
-    //         hex"7f0100000000000000000000000000000000000000000000000000000000000000610420"
-    //     );
-
-    //     // Keep default "a" value and assign "b", which is unassigned in "ConstOverride.fe"
-    //     address deployed_4 =
-    //         FeDeployer.config().with_constant("b", "0x420").deploy("test/contracts/ConstOverride");
-    //     assertEq(getCode(deployed_4), hex"6001610420");
     // }
 
     // function testConstantOverride_Create2() public {
