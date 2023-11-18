@@ -26,7 +26,7 @@ forge install cairoeth/foundry-fe
 The FeDeployer is a Solidity library that takes a filename and deploys the corresponding Fe contract, returning the address that the bytecode was deployed to. To use it, simply import it into your file by doing:
 
 ```js
-import {FeDeployer} from "foundry-fe/FeDeployer.sol";
+import {FeDeployer} from "foundry-fe/src/FeDeployer.sol";
 ```
 
 To compile contracts, you can use `FeDeployer.deploy(string fileName)`, which takes in a single string representing the filename's path relative to the `src` directory. Note that the file ending, i.e. `.fe`, must be omitted.
@@ -36,7 +36,7 @@ Here is an example deployment (where the contract is located in [`src/test/contr
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.7.0 <0.9.0;
 
-import {FeDeployer} from "foundry-fe/FeDeployer";
+import {FeDeployer} from "foundry-fe/src/FeDeployer";
 
 interface Number {
   function setNumber(uint256) external;
@@ -46,7 +46,7 @@ interface Number {
 contract FeDeployerExample {
   function deploy() public {
     // Deploy a new instance of src/test/contracts/Number.fe
-    address addr = FeDeployer.deploy("test/contracts/Number");
+    address addr = FeDeployer.deploy("test/contracts/Number.fe", "Number");
 
     // To call a function on the deployed contract, create an interface and wrap the address like so
     Number number = Number(addr);
